@@ -1,0 +1,105 @@
+@use "utilities/variables.scss";
+
+.feed_grid {
+    line-height: 16px;
+
+    -webkit-column-count: 3;
+    -webkit-column-gap: 16px;
+    -moz-column-count: 3;
+    -moz-column-gap: 16px;
+    column-count: 3;
+    column-gap: 16px;
+
+    -webkit-row-gap: 16px;
+    -moz-row-gap: 16px;
+    row-gap: 16px;
+
+    .feed_post {
+        background-color: variables.$white;
+        border-radius: variables.$radius-small;
+        margin-top: 16px;
+        text-decoration: none;
+        color: variables.$purple-2;
+        border-radius: variables.$radius-small;
+
+        .post_badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: variables.$radius-small;
+        }
+
+        .post_image {
+            position: relative;
+
+            img {
+                border-radius: variables.$radius-small;
+                object-fit: contain;
+                width: 100%;
+                position: relative;
+            }
+
+            .actions {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+
+                display: flex;
+                gap: 8px;
+            }
+
+            // .like {
+            //     position: absolute;
+            //     top: 15px;
+            //     right: 15px;
+            // }
+
+            // .save {
+            //     position: absolute;
+            //     top: 15px;
+            //     right: 45px;
+            // }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .feed_grid {
+        line-height: 16px;
+
+        -webkit-column-count: 2;
+        -webkit-column-gap: 16px;
+        -moz-column-count: 2;
+        -moz-column-gap: 16px;
+        column-count: 2;
+        column-gap: 16px;
+
+        -webkit-row-gap: 16px;
+        -moz-row-gap: 16px;
+        row-gap: 16px;
+    }
+
+    .badge_text {
+    }
+}
+
+@media (min-width: 1200px) {
+    .feed_grid {
+        line-height: 16px;
+
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media (min-width: 1700px) {
+    .feed_grid {
+        line-height: 16px;
+
+        -webkit-column-count: 6;
+        -moz-column-count: 6;
+        column-count: 6;
+    }
+}

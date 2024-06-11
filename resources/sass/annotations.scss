@@ -1,0 +1,217 @@
+@use "utilities/variables.scss";
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+
+    padding: 16px;
+
+    .label {
+        aspect-ratio: 3/5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+
+        height: 100%;
+        padding: 16px;
+
+        border: 2px solid variables.$white;
+
+        cursor: pointer;
+
+        // background-color: variables.$detail;
+
+        border-radius: 16px;
+
+        svg {
+            color: variables.$white;
+            font-weight: bold;
+
+        }
+
+        p {
+            color: variables.$white;
+        }
+    }
+}
+
+.annotations_container {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+
+    .image {
+        position: relative;
+
+        img {
+            width: 100%;
+            max-height: 100%;
+            border-radius: variables.$radius-medium;
+        }
+
+        .annotation-popup {
+            position: absolute;
+            width: 200px;
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+            padding: 10px;
+            z-index: 999; /* Ensure the popup appears above the image */
+        }
+
+        .existing-annotation {
+            position: absolute;
+            z-index: 999;
+        }
+
+        .annotation {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: variables.$faded_white;
+            border-radius: 50%;
+
+            .active {
+                border: 2px solid variables.$purple-2;
+            }
+
+            .outer-circle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 70%;
+                height: 70%;
+                background-color: variables.$white;
+                border-radius: 50%;
+
+                &.new {
+                    background-color: variables.$main-color;
+                }
+            }
+
+            .inner-circle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                font-weight: bold;
+            }
+
+            p {
+                color: variables.$main-color;
+            }
+        }
+    }
+
+    .annotations {
+        display: flex;
+        width: 100%; /* Ensure the container takes full width */
+
+        .index_column {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 0;
+
+            .annotation_container {
+                padding-right: 8px;
+
+                &.active {
+                    background-color: variables.$white;
+                    border-radius: 50% 0 0  50%;
+                }
+            }
+
+            .annotation {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background-color: variables.$faded_white;
+                border-radius: 50%;
+
+                .outer-circle {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 70%;
+                    height: 70%;
+                    background-color: variables.$white;
+                    border-radius: 50%;
+
+                    &.active {
+                        border: 2px solid variables.$purple-2;
+                    }
+
+                    &.inactive {
+                        background-color: variables.$inactive_grey;
+                    }
+                }
+
+                .inner-circle {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    font-weight: bold;
+                }
+
+                p {
+                    color: variables.$main-color;
+                }
+            }
+        }
+
+        .wide-column {
+            flex: 1; /* This will take the remaining space */
+            background-color: variables.$white;
+            border-radius: variables.$radius-medium;
+            padding: 16px;
+
+            p {
+                color: variables.$main-color;
+            }
+        }
+
+        .inactive {
+            background-color: variables.$inactive_grey;
+
+            p {
+                color: variables.$white;
+            }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .annotations_container {
+        grid-template-columns:repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1600px) {
+    .annotations_container {
+        .image {
+            max-width: fit-content;
+
+            img {
+                object-fit: contain;
+                height: 90vh;
+            }
+        }
+    }
+}
+
+
