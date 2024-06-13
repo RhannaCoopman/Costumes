@@ -1,3 +1,29 @@
+@if (request()->routeIs('feed.list') || request()->routeIs('profile.*'))
+<nav>
+    <div>
+        <a href="{{ route('feed.list') }}" class="{{ request()->routeIs('feed.list') ? 'active' : '' }}">
+            <img src="/images/crown.svg" />
+            <div class="{{ request()->routeIs('feed.list') ? 'active' : '' }}"></div>
+        </a>
+
+        <a class="primary" href="{{ route('post.create') }}" class="{{ request()->routeIs('post.create') ? 'active' : '' }}">
+            <img src="/images/crown.svg" />
+        </a>
+
+        <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+            <img src="/images/crown.svg" />
+            <div class="{{ request()->routeIs('profile.*') ? 'active' : '' }}"></div>
+        </a>
+
+        <a href="{{ route('groups.recommendations') }}" class="{{ request()->routeIs('groups.recommendations') ? 'active' : '' }}">
+            <img src="/images/crown.svg" />
+            <div class="{{ request()->routeIs('groups.recommendations') ? 'active' : '' }}"></div>
+        </a>
+    </div>
+</nav>
+@endif
+
+
 {{-- <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,21 +125,3 @@
     </div>
 </nav> --}}
 
-<nav>
-    <div>
-        <a href="{{ route('feed.list') }}">
-            <img :src="'/images/crown.svg'" />
-            <div class="active"></div>
-        </a>
-
-        <a class="primary" href="{{ route('post.create') }}">
-            <img :src="'/images/crown.svg'" />
-        </a>
-
-        <a href="{{ route('feed.list') }}">
-            <img :src="'/images/crown.svg'" />
-            <div></div>
-        </a>
-
-    </div>
-</nav>

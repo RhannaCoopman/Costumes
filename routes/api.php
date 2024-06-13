@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\WebshopScraperController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,5 @@ Route::namespace('Api')
 
         Route::get('/save-post', [PostController::class, 'get']);
 
-        Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike']);
+        Route::get('/scrape-webshop', [WebshopScraperController::class, 'scrape']);
     });

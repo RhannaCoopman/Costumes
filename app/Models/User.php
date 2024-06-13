@@ -17,21 +17,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name', 'email', 'password'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -49,13 +42,22 @@ class User extends Authenticatable
     public function likedPosts()
     {
         return $this->belongsToMany(Post::class, 'likes')
-            ->withTimestamps();
+        ->withTimestamps();
     }
 
     public function savedPosts()
     {
         return $this->belongsToMany(Post::class, 'saves')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->orderBy('saves.created_at', 'desc');
+    }
+
+    /**
+     * Get the posts uploaded by the user.
+     */
+    public function uploadedPosts()
+    {
+        return $this->hasMany(Post::class)->orderBy('updated_at', 'desc');;
     }
 
     /**

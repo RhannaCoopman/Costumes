@@ -2,9 +2,26 @@
     <div class="annotations_container">
         <div class="image">
 
-            <!-- Image -->
-            <img :src="getImageUrl(this.post.images[this.imageIndex].path)" :alt="'Image for post ' + post.id">
+            <!-- Screen navigation -->
+            <div class="screen_navigation">
+                <div>
+                    <a href="/" class="faded_button">
+                        <img :src="'/images/arrow-left.svg'" />
+                    </a>
+                </div>
+            </div>
 
+            <!-- Image -->
+            <div class="post_image">
+                <img :src="getImageUrl(this.post.images[this.imageIndex].path)" :alt="'Image for post ' + post.id" />
+                <div class="actions">
+                    <like class="faded_button" :post-id="this.post.id" :initial-liked="this.liked"
+                        :initial-likes-count="this.likesCount"></like>
+
+                    <save class="faded_button" :post-id="this.post.id" :initial-saved="this.saved"></save>
+                </div>
+
+            </div>
             <!-- Navigation -->
             <div v-if="this.post.images.length > 1" class="navigation">
                 <button @click="prevImage" :disabled="imageIndex === 0">
@@ -56,17 +73,18 @@
 
             <div class="wide-column">
                 <div v-if="currentAnnotation != null">
-                    <p>{{ this.post.images[imageIndex].annotations[currentAnnotation].name }}</p>
-                    <p>{{ this.post.images[imageIndex].annotations[currentAnnotation].store }}</p>
-                    <p>{{ this.post.images[imageIndex].annotations[currentAnnotation].url }}</p>
+                    <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . name }}</p>
+                    <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . store }}</p>
+                    <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . url }}</p>
                     <!-- <a :href="this.post.images[imageIndex].annotations[currentAnnotation].url" target="_blank">Visit webshop</a> -->
-                    <button @click="goToLink(this.post.images[imageIndex].annotations[currentAnnotation].url)">Visit webshop</button>
+                    <button @click="goToLink(this.post.images[imageIndex].annotations[currentAnnotation].url)">Visit
+                        webshop</button>
 
                 </div>
                 <div v-else>
-                    <p>{{ this.post.user.name }}</p>
-                    <p>{{ this.post.formatted_created_at }}</p>
-                    <p>{{ this.post.content }}</p>
+                    <p>{{ this . post . user . name }}</p>
+                    <p>{{ this . post . formatted_created_at }}</p>
+                    <p>{{ this . post . content }}</p>
                 </div>
             </div>
         </div>
@@ -84,7 +102,8 @@
         props: {
             post: Object,
             liked: Boolean,
-            likesCount: Number
+            likesCount: Number,
+            saved: Boolean,
         },
         methods: {
             getImageUrl(path) {

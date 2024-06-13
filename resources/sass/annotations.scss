@@ -44,6 +44,13 @@
     gap: 16px;
     grid-template-columns:repeat(2, minmax(0, 1fr));
 
+    .screen_navigation {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+
+    }
+
     .image {
         position: relative;
 
@@ -113,7 +120,7 @@
 
     .annotations {
         display: flex;
-        width: 100%; /* Ensure the container takes full width */
+        max-width: 100%;
 
         .index_column {
             display: flex;
@@ -179,6 +186,7 @@
             background-color: variables.$white;
             border-radius: variables.$radius-medium;
             padding: 16px;
+            max-width: 100%;
 
             p {
                 color: variables.$main-color;
@@ -199,6 +207,10 @@
     .annotations_container {
         grid-template-columns:repeat(1, minmax(0, 1fr));
     }
+
+    .input_with_button {
+        flex-direction: column;
+    }
 }
 
 @media (min-width: 1600px) {
@@ -213,5 +225,3 @@
         }
     }
 }
-
-

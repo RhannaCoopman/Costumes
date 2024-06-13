@@ -33,7 +33,6 @@ class Post extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'id',
     ];
 
     protected $appends = ['formatted_created_at'];

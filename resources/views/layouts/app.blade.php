@@ -16,7 +16,7 @@
 
     </head>
     <body id="app">
-            {{-- @include('layouts.navigation') --}}
+            @include('layouts.navigation')
 
             {{-- <!-- Page Heading -->
             @if (isset($header))

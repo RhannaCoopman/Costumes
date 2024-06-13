@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -11,21 +12,28 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
     Route::get('/', [PostController::class, 'feed'])->name('feed.list');
     Route::get('/post/{post:uuid}', [PostController::class, 'post'])->name('post.detail');
     Route::get('new', [PostController::class, 'create'])->name('post.create');
-
-    Route::post('/upload-images', [ImageController::class, 'store'])->name('upload.images.store');
-    Route::delete('/delete-image/{id}', [ImageController::class, 'destroy'])->name('delete.image');
-
     Route::get('/save-post', [PostController::class, 'get']);
+
+    // Route::get('/chats', [ChatController::class, 'list'])->name('chats.list');
+    Route::get('/groups', [ChatController::class, 'recommendGroups'])->name('groups.recommendations');
+    Route::get('/groups/{group}', [ChatController::class, 'show'])->name('groups.show');
+
+    // Route::post('/upload-images', [ImageController::class, 'store'])->name('upload.images.store');
+    // Route::delete('/delete-image/{id}', [ImageController::class, 'destroy'])->name('delete.image');
 
     Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike']);
     Route::post('/posts/{post}/toggle-save', [PostController::class, 'toggleSave']);

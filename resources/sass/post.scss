@@ -1,0 +1,42 @@
+@use "utilities/variables.scss";
+
+.actions {
+    position: absolute;
+    bottom: 35px;
+    right: 35px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+
+    label {
+        padding-left: 2px;
+        padding-bottom: 8px;
+        color: variables.$main-color;
+        font-family: variables.$sans-serif;
+        font-size: 12px;
+    }
+
+    input {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid variables.$main-color;
+    }
+}
+
+.input_with_button {
+    padding-bottom: 16px;
+    display: flex;
+    gap: 16px;
+
+    button {
+        width: 150px;
+        height: fit-content;
+    }
+}

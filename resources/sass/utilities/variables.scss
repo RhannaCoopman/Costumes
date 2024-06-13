@@ -8,7 +8,19 @@ $inactive_grey: #faf8f637;
 $radius-small: 8px;
 $radius-medium: 16px;
 
-$serif: serif;
-$sans-serif: sans-serif;
+$serif: 'TT Ramillas', 'Neometric';
+$sans-serif: 'Neometric';
 
+@font-face {
+    font-family: 'Neometric';
+    src: url('../../../public/fonts/Neometric-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'TT Ramillas';
+    src: url('../../../public/fonts/Fontspring-DEMO-tt_ramillas_extrabold.otf') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}

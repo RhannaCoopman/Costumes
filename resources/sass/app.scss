@@ -2,6 +2,8 @@
 
 @use "feed.scss";
 @use "annotations.scss";
+@use "post.scss";
+@use "profile.scss";
 
 body {
     padding: 0;
@@ -22,9 +24,6 @@ h1 {
 p {
     font-family: variables.$sans-serif;
 }
-
-
-
 
 nav {
     z-index: 20;
@@ -117,7 +116,22 @@ nav {
     }
 }
 
-.navigation {
+.screen_navigation {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+        gap: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.image_navigation {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,9 +179,14 @@ button {
     }
 }
 
-input {
-    padding: 16px;
-    border-radius: 16px;
-    margin: 16px 0;
-    border: 0 solid transparent
+
+
+.faded_button {
+    background-color: variables.$faded_white;
+    padding: 8px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

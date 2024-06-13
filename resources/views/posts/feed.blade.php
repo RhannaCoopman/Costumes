@@ -2,12 +2,11 @@
     <h1>Get inspired</h1>
 
     <div class="feed_grid">
-        {{-- {{ $posts }} --}}
 
         @foreach ($posts as $post)
             <div class="feed_post">
                 <a href="{{ route('post.detail', ['post' => $post->uuid]) }}" class="feed_post">
-                    @if ($post->likes_count >= 1)
+                    @if ($post->popular)
                         <div class="post_badge">
                             <img :src="'/images/crown.svg'" />
                             <p class="badge_text">Most liked today</p>
@@ -33,23 +32,3 @@
         @endforeach
     </div>
 </x-app-layout>
-
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.like').forEach(likeButton => {
-            likeButton.addEventListener('click', function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-            });
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.save').forEach(saveButton => {
-            saveButton.addEventListener('click', function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-            });
-        });
-    });
-</script> --}}
