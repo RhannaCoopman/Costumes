@@ -30,20 +30,14 @@ class WebshopScraperObserver extends CrawlObserver
 
         try {
             // Product name
-            $productName = $crawler->filter('h1')->text() ?? null;
+            $productName = $crawler->filter('h1')->text();
 
-            // $productImage = null;
-            // $imageNode = $crawler->filter('img')->first();
-            // info('image node');
-            // info(json_encode($imageNode, JSON_PRETTY_PRINT));
-            // if ($imageNode->count()) {
-            //     $productImage = $imageNode->attr('src');
-            // }
+            $storeName = $this->extractStoreName($url);
 
             // Store product data
             $this->scrapedData = [
                 'name' => $productName,
-                // 'image' => $productImage,
+                'store' => $storeName,
             ];
 
             // Log product data
@@ -53,6 +47,44 @@ class WebshopScraperObserver extends CrawlObserver
             Log::error('Error extracting product data: ' . $e->getMessage());
         }
     }
+
+    /**
+ * Extracts the store name from the given URL heuristically.
+ *
+ * @param UriInterface $url
+ * @return string
+ */
+private function extractStoreName(UriInterface $url): string {
+    $host = $url->getHost();
+
+    // Remove 'www.' if present
+    $host = preg_replace('/^www\./', '', $host);
+
+    // Extract the main part of the domain name (e.g., 'zalando', 'c-and-a', 'jules')
+    $parts = explode('.', $host);
+    $domain = $parts[0];
+
+    // Convert domain part to a more readable store name
+    $storeName = $this->formatStoreName($domain);
+
+    return $storeName;
+}
+
+/**
+ * Formats the domain part to a more readable store name.
+ *
+ * @param string $domain
+ * @return string
+ */
+private function formatStoreName(string $domain): string {
+    // Replace hyphens with spaces
+    $domain = str_replace('-', ' ', $domain);
+
+    // Capitalize each word
+    $storeName = ucwords($domain);
+
+    return $storeName;
+}
 
     public function crawlFailed(
         UriInterface $url,

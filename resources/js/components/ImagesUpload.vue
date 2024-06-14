@@ -167,7 +167,7 @@
 
                             <div class="input">
                                 <label>Shop</label>
-                                <input type="text" v-model="annotation.shop" autofocus
+                                <input type="text" v-model="annotation.store" autofocus
                                     @keyup.enter="saveAnnotation" />
                             </div>
 
@@ -189,8 +189,7 @@
                         <div class="input_with_button">
                             <div class="input">
                                 <label>Url</label>
-                                <input type="text" v-model="annotation.url" autofocus
-                                    @keyup.enter="scrape()" />
+                                <input type="text" v-model="annotation.url" autofocus @keyup.enter="scrape()" />
                             </div>
 
                             <button @click="scrape()">Zoek kledingsstuk</button>
@@ -219,7 +218,7 @@
                             <div class="input">
                                 <label>Shop</label>
                                 <input type="text"
-                                    v-model="files[currentImage].annotations[currentAnnotation].shop"
+                                    v-model="files[currentImage].annotations[currentAnnotation].store"
                                     @keyup.enter="saveAnnotation" />
                             </div>
 
@@ -239,8 +238,7 @@
 
                             <div class="input">
                                 <label>Url</label>
-                                <input type="text"
-                                    v-model="files[currentImage].annotations[currentAnnotation].url"
+                                <input type="text" v-model="files[currentImage].annotations[currentAnnotation].url"
                                     @keyup.enter="saveAnnotation" />
                             </div>
 
@@ -273,9 +271,16 @@
         </div>
 
         <!-- Input fields -->
-        <input type="text" v-model="content" placeholder="Enter a text" autofocus />
+        <div class="input">
+            <label>Content</label>
+            <input type="text" v-model="this.content" />
+        </div>
 
-        <input type="text" v-model="tags" placeholder="Enter tags, seperated with a comma" />
+        <div class="input">
+            <label>Tags</label>
+            <input type="text" v-model="this.tags" placeholder="Enter tags, seperated with a comma" />
+        </div>
+
 
     </div>
 </template>
@@ -318,8 +323,6 @@
         },
         methods: {
             async scrape() {
-                console.log(this.annotation.url);
-
                 axios
                     .get(`/api/scrape-webshop`, {
                         params: {
@@ -327,11 +330,8 @@
                         },
                     })
                     .then((response) => {
-                        console.log(response);
-
                         this.annotation.name = response.data.name;
                         this.annotation.store = response.data.store;
-                        this.annotation.image = response.data.image;
                     })
                     .catch((error) => {
                         console.error("Error fetching data:", error);
@@ -408,14 +408,9 @@
                     });
                 });
 
-                console.log(this.screen);
-
                 if (!this.multiple) {
                     this.screen = "annotations";
                 }
-
-                console.log(this.screen);
-
             },
             changeScreen(screen) {
                 this.screen = screen;
@@ -427,7 +422,7 @@
 
                 this.files.forEach((item, index) => {
                     formData.append(`images[${index}]`, item
-                        .file); // Use item.file to append the original file
+                        .file);
                     item.annotations.forEach((annotation, annotationIndex) => {
                         formData.append(
                             `images[${index}][annotations][${annotationIndex}][x]`,
@@ -467,6 +462,9 @@
                     }
                     console.error("Error uploading images:", error);
                 }
+
+                window.location.href = "/profile";
+
             },
             prevImage() {
                 if (this.currentImage > 0) {

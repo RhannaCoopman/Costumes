@@ -1,26 +1,21 @@
-@if (request()->routeIs('feed.list') || request()->routeIs('profile.*'))
-<nav>
-    <div>
-        <a href="{{ route('feed.list') }}" class="{{ request()->routeIs('feed.list') ? 'active' : '' }}">
-            <img src="/images/crown.svg" />
-            <div class="{{ request()->routeIs('feed.list') ? 'active' : '' }}"></div>
-        </a>
+@if (request()->routeIs('feed.list') || request()->routeIs('profile.*') || request()->routeIs('groups.recommendations'))
+    <nav>
+        <div>
+            <a href="{{ route('feed.list') }}" class="{{ request()->routeIs('feed.list') ? 'active' : '' }}">
+                <img src="/images/navigation/feed.svg" />
+                <div class="{{ request()->routeIs('feed.list') ? 'active' : '' }}"></div>
+            </a>
 
-        <a class="primary" href="{{ route('post.create') }}" class="{{ request()->routeIs('post.create') ? 'active' : '' }}">
-            <img src="/images/crown.svg" />
-        </a>
+            <a class="primary" href="{{ route('post.create') }}" class="{{ request()->routeIs('post.create') ? 'active' : '' }}">
+                <img src="/images/navigation/plus.svg" />
+            </a>
 
-        <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
-            <img src="/images/crown.svg" />
-            <div class="{{ request()->routeIs('profile.*') ? 'active' : '' }}"></div>
-        </a>
-
-        <a href="{{ route('groups.recommendations') }}" class="{{ request()->routeIs('groups.recommendations') ? 'active' : '' }}">
-            <img src="/images/crown.svg" />
-            <div class="{{ request()->routeIs('groups.recommendations') ? 'active' : '' }}"></div>
-        </a>
-    </div>
-</nav>
+            <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                <img src="/images/navigation/profile.svg" />
+                <div class="{{ request()->routeIs('profile.*') ? 'active' : '' }}"></div>
+            </a>
+        </div>
+    </nav>
 @endif
 
 

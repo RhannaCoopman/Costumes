@@ -23,14 +23,11 @@
 
         cursor: pointer;
 
-        // background-color: variables.$detail;
-
         border-radius: 16px;
 
         svg {
             color: variables.$white;
             font-weight: bold;
-
         }
 
         p {
@@ -48,7 +45,6 @@
         position: absolute;
         left: 15px;
         top: 15px;
-
     }
 
     .image {
@@ -67,7 +63,7 @@
             color: black;
             border: 1px solid black;
             padding: 10px;
-            z-index: 999; /* Ensure the popup appears above the image */
+            z-index: 999;
         }
 
         .existing-annotation {
@@ -182,7 +178,7 @@
         }
 
         .wide-column {
-            flex: 1; /* This will take the remaining space */
+            flex: 1;
             background-color: variables.$white;
             border-radius: variables.$radius-medium;
             padding: 16px;

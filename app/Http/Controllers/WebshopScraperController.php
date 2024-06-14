@@ -12,7 +12,6 @@ class WebshopScraperController extends Controller
     public function scrape(Request $request)
     {
         $url = $request->input('url');
-        info($url);
 
         $observer = new WebshopScraperObserver();
 

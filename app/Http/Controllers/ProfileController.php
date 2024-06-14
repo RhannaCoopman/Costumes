@@ -31,7 +31,6 @@ class ProfileController extends Controller
 
         $user = User::find($user_id)->load(['savedPosts.firstImage', 'uploadedPosts.firstImage']);
 
-
         return view('profile.show', [
             'user' => $user,
         ]);

@@ -9,8 +9,6 @@ use App\Models\Post;
 use App\Models\Save;
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\UserTag;
-use App\Observers\Webshop\WebshopScraperObserver;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -18,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
-use Spatie\Crawler\Crawler;
 
 class PostController extends Controller
 {
@@ -143,7 +140,6 @@ class PostController extends Controller
                 if ($annotations) {
                     // Save tags associated with the image
                     foreach ($annotations as $annotation) {
-                        info($annotation);
                         $data = new Annotation();
                         $data->uuid = Uuid::uuid4()->toString();
                         $data->xPosition = $annotation['x'];
@@ -152,15 +148,13 @@ class PostController extends Controller
                         $data->name = $annotation['name'];
                         $data->shop = $annotation['store'];
                         $data->url = $annotation['url'];
-                        $data->image_id = $imageModel->id; // Assuming image_id is the foreign key for images table
+                        $data->image_id = $imageModel->id;
                         $data->save();
                     }
                 }
             }
 
             DB::commit();
-
-            info('1');
 
             return redirect()->route('post.detail', ['post' => $post]);
         } catch (Exception $e) {

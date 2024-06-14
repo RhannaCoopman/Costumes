@@ -112,7 +112,7 @@
             prevImage() {
                 if (this.imageIndex > 0) {
                     this.imageIndex--;
-                    // this.currentAnnotation = null;
+                    this.currentAnnotation = null;
                 }
             },
             nextImage() {

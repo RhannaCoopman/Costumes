@@ -1,0 +1,10 @@
+{
+    "Zalando": {
+        "name": "h1.product-name",
+        "image": "img.product-image"
+    },
+    "Jules": {
+        "name": ".product-title",
+        "image": ".product-image img"
+    }
+}

@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/post/{post:uuid}', [PostController::class, 'post'])->name('post.detail');
     Route::get('new', [PostController::class, 'create'])->name('post.create');
     Route::get('/save-post', [PostController::class, 'get']);
-
-    // Route::get('/chats', [ChatController::class, 'list'])->name('chats.list');
-    Route::get('/groups', [ChatController::class, 'recommendGroups'])->name('groups.recommendations');
-    Route::get('/groups/{group}', [ChatController::class, 'show'])->name('groups.show');
-
-    // Route::post('/upload-images', [ImageController::class, 'store'])->name('upload.images.store');
-    // Route::delete('/delete-image/{id}', [ImageController::class, 'destroy'])->name('delete.image');
 
     Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike']);
     Route::post('/posts/{post}/toggle-save', [PostController::class, 'toggleSave']);
