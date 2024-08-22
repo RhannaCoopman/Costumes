@@ -1,0 +1,26 @@
+@use "../utilities/variables.scss";
+
+.detail_color {
+    background-color: variables.$detail;
+    color: variables.$main-color;
+}
+
+.main_color {
+    background-color: variables.$main-color;
+    color: variables.$white;
+}
+
+.faded_main_color {
+    background-color: variables.$faded-main-color;
+    color: variables.$white;
+}
+
+.faded_white_color {
+    background-color: variables.$faded_white;
+    color: variables.$white;
+}
+
+.white_color {
+    background-color: variables.$white;
+    color: variables.$main-color;
+}

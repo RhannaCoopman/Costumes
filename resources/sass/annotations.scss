@@ -40,6 +40,7 @@
     display: grid;
     gap: 16px;
     grid-template-columns:repeat(2, minmax(0, 1fr));
+    height: 90vh;
 
     .screen_navigation {
         position: absolute;
@@ -48,11 +49,14 @@
     }
 
     .image {
+        justify-self: center;
         position: relative;
+        max-height: 80vh;
+        max-width: fit-content;
 
         img {
-            width: 100%;
-            max-height: 100%;
+            max-width: 100%;
+            max-height: 80vh;
             border-radius: variables.$radius-medium;
         }
 
@@ -125,6 +129,7 @@
             align-items: center;
             gap: 8px;
             padding: 16px 0;
+            height: fit-content;
 
             .annotation_container {
                 padding-right: 8px;
@@ -183,6 +188,7 @@
             border-radius: variables.$radius-medium;
             padding: 16px;
             max-width: 100%;
+            height: fit-content;
 
             p {
                 color: variables.$main-color;
@@ -199,25 +205,49 @@
     }
 }
 
-@media (max-width: 700px) {
-    .annotations_container {
-        grid-template-columns:repeat(1, minmax(0, 1fr));
+
+.message {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: variables.$radius-small;
+    margin: 8px 0;
+    width: fit-content;
+    padding: 8px 16px;
+    color: variables.$main-color;
+    margin-top: 10px;
+    background: variables.$detail;
+
+    &.loading {
+        display: flex;
+        align-items: center;
     }
 
-    .input_with_button {
-        flex-direction: column;
+    &.success-message {
+        background-color: variables.$green;
+    }
+
+    &.error-message {
+        background-color: variables.$red;
     }
 }
 
-@media (min-width: 1600px) {
-    .annotations_container {
-        .image {
-            max-width: fit-content;
+.loading-icon {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 1s linear infinite;
+}
 
-            img {
-                object-fit: contain;
-                height: 90vh;
-            }
-        }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Save;
 use App\Models\Tag;
 use App\Models\User;
+use App\Services\TagService;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -57,9 +58,7 @@ class PostController extends Controller
                         0.2 * COALESCE(lc.likes_count, 0) +
                         0.2 * COALESCE(sc.saves_count, 0) +
                         0.2 * DATEDIFF(NOW(), p.created_at) +
-                        0.1 * DATEDIFF(NOW(), p.updated_at) +
-                        4 * IF(s.id IS NOT NULL, 0.7, 1) +
-                        4 * IF(l.id IS NOT NULL, 0.7, 1)
+                        0.1 * DATEDIFF(NOW(), p.updated_at)
                     ) as score
                 '),
             )
@@ -70,6 +69,58 @@ class PostController extends Controller
             'posts' => $posts,
         ]);
     }
+
+    // public function feed(): View
+    // {
+    //     $user_id = Auth::id();
+
+    //     // Get common tags score query
+    //     $commonTagsQuery = TagService::calculateTagScoreJoin($user_id);
+
+    //     // Build the main query for posts
+    //     $posts = DB::table('posts as p')
+    //         ->leftJoinSub($commonTagsQuery, 'ct', 'p.id', '=', 'ct.post_id')
+    //         ->leftJoin('likes as l', function ($join) use ($user_id) {
+    //             $join->on('p.id', '=', 'l.post_id')->where('l.user_id', '=', $user_id);
+    //         })
+    //         ->leftJoin('saves as s', function ($join) use ($user_id) {
+    //             $join->on('p.id', '=', 's.post_id')->where('s.user_id', '=', $user_id);
+    //         })
+    //         ->leftJoin(DB::raw('(SELECT post_id, COUNT(*) as likes_count FROM likes GROUP BY post_id) as lc'), 'p.id', '=', 'lc.post_id')
+    //         ->leftJoin(DB::raw('(SELECT post_id, COUNT(*) as saves_count FROM saves GROUP BY post_id) as sc'), 'p.id', '=', 'sc.post_id')
+    //         ->leftJoin(DB::raw('(SELECT post_id, MIN(id) as first_image_id FROM images GROUP BY post_id) as fi'), 'p.id', '=', 'fi.post_id')
+    //         ->leftJoin('images as i', 'fi.first_image_id', '=', 'i.id')
+    //         ->select(
+    //             'p.id',
+    //             'p.content',
+    //             'p.uuid',
+    //             'p.popular',
+    //             'p.created_at',
+    //             'p.updated_at',
+    //             DB::raw('COALESCE(ct.total_tag_score, 0) as total_tag_score'),
+    //             DB::raw('COALESCE(lc.likes_count, 0) as likes_count'),
+    //             DB::raw('COALESCE(sc.saves_count, 0) as saves_count'),
+    //             DB::raw('CASE WHEN l.id IS NOT NULL THEN "true" ELSE "false" END as liked'),
+    //             DB::raw('CASE WHEN s.id IS NOT NULL THEN "true" ELSE "false" END as saved'),
+    //             'i.path as first_image_path',
+    //             DB::raw('
+    //                 (
+    //                     0.1 * COALESCE(ct.total_tag_score, 0) +
+    //                     0.2 * COALESCE(lc.likes_count, 0) +
+    //                     0.2 * COALESCE(sc.saves_count, 0) +
+    //                     0.2 * DATEDIFF(NOW(), p.created_at) +
+    //                     0.1 * DATEDIFF(NOW(), p.updated_at)
+    //                 ) as score
+    //             '),
+    //         )
+    //         ->orderByDesc('score')
+    //         ->get();
+
+        // return view('posts.feed', [
+        //     'posts' => $posts,
+        // ]);
+    // }
+
 
     public function post(Post $post): View
     {
@@ -97,74 +148,74 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     // $user_id = Auth::id();
+    //     // info($user_id);
 
-        try {
-            DB::beginTransaction();
 
-            $post = Post::create([
-                'uuid' => Uuid::uuid4()->toString(),
-                'content' => $request->content,
-                'user_id' => auth()->id() ?? 1,
-            ]);
+    //     try {
+    //         DB::beginTransaction();
 
-            $tags = explode(',', $request->tags);
+    //         $post = Post::create([
+    //             'uuid' => Uuid::uuid4()->toString(),
+    //             'content' => $request->content,
+    //             'user_id' => 1,
+    //         ]);
 
-            foreach ($tags as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => trim($tagName)], ['uuid' => Uuid::uuid4()->toString()]);
+    //         $tags = explode(',', $request->tags);
 
-                // Attach the tag to the post
-                $post->tags()->attach($tag->id);
-            }
+    //         foreach ($tags as $tagName) {
+    //             $tag = Tag::firstOrCreate(['name' => trim($tagName)], ['uuid' => Uuid::uuid4()->toString()]);
 
-            $images = $request->file('images');
+    //             // Attach the tag to the post
+    //             $post->tags()->attach($tag->id);
+    //         }
 
-            foreach ($images as $index => $file) {
-                // Retrieve tags data for the current image
-                $annotations = $request->input("images.$index.annotations");
+    //         $images = $request->file('images');
 
-                // Save the image
-                $path = $file->store('uploads', 'public');
-                $imageModel = new Image();
-                $imageModel->filename = $file->getClientOriginalName();
-                $imageModel->mime = $file->getClientMimeType();
-                $imageModel->path = $path;
-                $imageModel->size = $file->getSize();
-                $imageModel->post_id = $post->id;
-                $imageModel->save();
+    //         foreach ($images as $index => $file) {
+    //             // Retrieve tags data for the current image
+    //             $annotations = $request->input("images.$index.annotations");
 
-                if ($annotations) {
-                    // Save tags associated with the image
-                    foreach ($annotations as $annotation) {
-                        $data = new Annotation();
-                        $data->uuid = Uuid::uuid4()->toString();
-                        $data->xPosition = $annotation['x'];
-                        $data->yPosition = $annotation['y'];
-                        $data->user_description = $annotation['name'];
-                        $data->name = $annotation['name'];
-                        $data->shop = $annotation['store'];
-                        $data->url = $annotation['url'];
-                        $data->image_id = $imageModel->id;
-                        $data->save();
-                    }
-                }
-            }
+    //             // Save the image
+    //             $path = $file->store('uploads', 'public');
+    //             $imageModel = new Image();
+    //             $imageModel->filename = $file->getClientOriginalName();
+    //             $imageModel->mime = $file->getClientMimeType();
+    //             $imageModel->path = $path;
+    //             $imageModel->size = $file->getSize();
+    //             $imageModel->post_id = $post->id;
+    //             $imageModel->save();
 
-            DB::commit();
+    //             if ($annotations) {
+    //                 // Save tags associated with the image
+    //                 foreach ($annotations as $annotation) {
+    //                     $data = new Annotation();
+    //                     $data->uuid = Uuid::uuid4()->toString();
+    //                     $data->xPosition = $annotation['x'];
+    //                     $data->yPosition = $annotation['y'];
+    //                     $data->user_description = $annotation['name'];
+    //                     $data->name = $annotation['name'];
+    //                     $data->shop = $annotation['store'];
+    //                     $data->url = $annotation['url'];
+    //                     $data->image_id = $imageModel->id;
+    //                     $data->save();
+    //                 }
+    //             }
+    //         }
 
-            return redirect()->route('post.detail', ['post' => $post]);
-        } catch (Exception $e) {
-            DB::rollback();
+    //         DB::commit();
 
-            Log::error($e->getMessage());
+    //         return redirect()->route('post.detail', ['post' => $post]);
+    //     } catch (Exception $e) {
+    //         DB::rollback();
 
-            return response()->json(['error' => 'Post creation failed.'], 500);
-        }
-    }
+    //         Log::error($e->getMessage());
+
+    //         return response()->json(['error' => 'Post creation failed.'], 500);
+    //     }
+    // }
 
     public function toggleLike($post_id)
     {
@@ -229,30 +280,30 @@ class PostController extends Controller
         foreach ($tags as $tag) {
             if (
                 $user
-                    ->tags()
+                    ->tagsWithScore()
                     ->where('tag_id', $tag->id)
                     ->exists()
             ) {
                 // Update existing pivot table record
                 $currentScore = $user
-                    ->tags()
+                    ->tagsWithScore()
                     ->where('tag_id', $tag->id)
                     ->first()->pivot->score;
                 $newScore = max(0, $currentScore + $weight); // Ensure the score does not go below zero
 
                 if ($newScore == 0) {
                     // Detach the tag if the new score is zero
-                    $user->tags()->detach($tag->id);
+                    $user->tagsWithScore()->detach($tag->id);
                 } else {
                     // Update the pivot table with the new score and update timestamps
-                    $user->tags()->updateExistingPivot($tag->id, [
+                    $user->tagsWithScore()->updateExistingPivot($tag->id, [
                         'score' => $newScore,
                         'updated_at' => now(),
                     ]);
                 }
             } elseif ($weight > 0) {
                 // Attach new record if liking and record does not exist with timestamps
-                $user->tags()->attach($tag->id, [
+                $user->tagsWithScore()->attach($tag->id, [
                     'score' => $weight,
                     'created_at' => now(),
                     'updated_at' => now(),

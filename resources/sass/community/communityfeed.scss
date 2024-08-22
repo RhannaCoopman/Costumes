@@ -1,0 +1,86 @@
+@use "../utilities/variables.scss";
+
+.community_feed_navigation {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 16px 0;
+
+    .toggle_container {
+        background-color: variables.$white;
+
+        display: flex;
+        gap: 16px;
+
+        border-radius: 32px;
+        padding: 4px;
+
+        div {
+            background-color: variables.$white;
+            color: variables.$main-color;
+            border-radius: 32px;
+            padding: 12px 24px;
+            cursor: pointer;
+
+
+            &.active {
+                background-color: variables.$main-color;
+                color: variables.$white;
+            }
+        }
+
+    }
+}
+
+.community_feed {
+    .infinite_container {
+        height: 100%;
+        overflow-y: auto;
+
+        .infinite_list {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            background-color: red;
+            .infinite_list_item {
+                background-color: variables.$white;
+
+                .title {
+                    font-family: variables.$serif;
+                    font-size: 20px;
+                }
+
+                .imagegrid {
+
+                    img {
+
+                    }
+                }
+
+                .actions {
+                    display: flex;
+                    gap: 16px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .community_feed {
+        .infinite_container {
+            height: 100%;
+            overflow-y: auto;
+
+            .infinite_list {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: repeat(1, 1fr);
+                background-color: aqua;
+            }
+        }
+    }
+}

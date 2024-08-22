@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click.stop.prevent="toggleLike" class="action_button">
+        <button @click.stop.prevent="toggleLike" class="square_button detail_color">
             <img v-if="liked" :src="'/images/liked.svg'" />
             <img v-else :src="'/images/not_liked.svg'" />
         </button>
@@ -19,10 +19,6 @@ export default {
             type: Boolean,
             required: true
         },
-        initialLikesCount: {
-            type: Number,
-            required: true
-        }
     },
     data() {
         return {

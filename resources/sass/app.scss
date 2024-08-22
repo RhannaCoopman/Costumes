@@ -4,33 +4,64 @@
 @use "annotations.scss";
 @use "post.scss";
 @use "profile.scss";
+@use "./community/communityfeed.scss";
+@use "./chat/chat.scss";
+
+@use "./general/button.scss";
+@use "./general/colors.scss";
+@use "./general/container.scss";
+@use "./general/layout.scss";
+@use "./general/fonts.scss";
+@use "./general/form.scss";
 
 body {
     padding: 0;
     margin: 0 auto;
+    height: 100%;
     box-sizing: border-box;
     background-color: variables.$main-color;
     color: variables.$white;
 }
 
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+header {
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+main {
+    flex: 1;
+    padding-top: 60px; /* height of header */
+    padding-bottom: 60px; /* height of navigation */
+    overflow-y: auto;
+}
+
 .content {
-    margin: 16px;
-}
-
-h1 {
-    font-family: variables.$serif;
-}
-
-p {
-    font-family: variables.$sans-serif;
+    padding: 16px;
 }
 
 nav {
-    z-index: 20;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     position: fixed;
-    bottom: 10vh;
-    width: 100vw;
-    height: auto;
+    width: 100%;
+    bottom: 0;
+    z-index: 1000;
+    text-align: center;
 
     display: flex;
     justify-content: center;
@@ -72,7 +103,25 @@ nav {
             }
         }
     }
+}
 
+.loading {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .upload-grid {
@@ -99,6 +148,7 @@ nav {
 
 .screen_navigation {
     width: 100%;
+    padding: 8px;
 
     display: flex;
     align-items: center;
@@ -141,33 +191,3 @@ nav {
     display: none;
 }
 
-button {
-    border: 0px solid transparent;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 16px;
-    cursor: pointer;
-    background-color: variables.$detail;
-    border-radius: 16px;
-
-    &.action_button {
-        padding: 4px;
-        border-radius: 4px;
-    }
-}
-
-
-
-.faded_button {
-    background-color: variables.$faded_white;
-    padding: 8px;
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

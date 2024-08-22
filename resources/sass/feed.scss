@@ -1,18 +1,28 @@
 @use "utilities/variables.scss";
 
 .feed_grid {
-    line-height: 16px;
 
-    -webkit-column-count: 3;
-    -webkit-column-gap: 16px;
-    -moz-column-count: 3;
-    -moz-column-gap: 16px;
-    column-count: 3;
-    column-gap: 16px;
+    height: calc(100vh - 160px);
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    gap: 8px;
 
-    -webkit-row-gap: 16px;
-    -moz-row-gap: 16px;
-    row-gap: 16px;
+    // line-height: 16px;
+
+    // -webkit-column-count: 3;
+    // -webkit-column-gap: 16px;
+    // -moz-column-count: 3;
+    // -moz-column-gap: 16px;
+    // column-count: 3;
+    // column-gap: 16px;
+
+    // -webkit-row-gap: 16px;
+    // -moz-row-gap: 16px;
+    // row-gap: 16px;
+
+    display: grid;
+    gap: 16px;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
 
     .feed_post {
         background-color: variables.$white;
@@ -66,9 +76,6 @@
         -webkit-row-gap: 16px;
         -moz-row-gap: 16px;
         row-gap: 16px;
-    }
-
-    .badge_text {
     }
 }
 

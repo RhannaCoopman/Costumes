@@ -11,7 +11,6 @@ class Group extends Model
 
     protected $fillable = ['name'];
 
-
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'group_tags');

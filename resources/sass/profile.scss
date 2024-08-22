@@ -1,6 +1,7 @@
 @use "utilities/variables.scss";
 
 .image-navigation {
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
 
@@ -12,17 +13,12 @@
 
 .image-carousel {
     display: flex;
-
     gap: 16px;
-
-    background-color: red;
-
     width: 100%;
 
     .post_image {
         width: 400px;
         height: 700px;
-        background-color: aqua;
 
         img {
             width: 100%;

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/post/{post:uuid}', [PostController::class, 'post'])->name('post.detail');
     Route::get('new', [PostController::class, 'create'])->name('post.create');
     Route::get('/save-post', [PostController::class, 'get']);
+
+    Route::get('/community', [CommunityController::class, 'feed'])->name('community.feed');
+
+    Route::get('/chats', [ChatController::class, 'list'])->name('chats.list');
+
+    Route::get('/chat/{chat:uuid?}', [ChatController::class, 'openChat'])->name('chats.detail');
 
     Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike']);
     Route::post('/posts/{post}/toggle-save', [PostController::class, 'toggleSave']);

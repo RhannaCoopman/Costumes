@@ -1,0 +1,26 @@
+@use "../utilities/variables.scss";
+
+h1, h3 {
+    font-family: variables.$serif;
+    margin:  0;
+    padding: 0 4px;
+}
+
+p, input, label, a {
+    font-family: variables.$sans-serif;
+    margin:  0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.light_font {
+    font-style: italic;
+    font-weight: 100;
+}
+
+.heavy_font {
+    font-weight: 600;
+}

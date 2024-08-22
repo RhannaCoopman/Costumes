@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('user_description')->nullable();
             $table->string('name')->nullable();
             $table->string('brand')->nullable();
-            $table->string('shop')->nullable();
+            $table->string('store')->nullable();
             $table->string('url')->nullable();
             $table->string('article_number')->nullable();
 

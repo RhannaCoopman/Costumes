@@ -1,0 +1,110 @@
+@use "../utilities/variables.scss";
+
+.input {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+
+    label {
+        padding-left: 2px;
+        padding-bottom: 8px;
+        color: variables.$main-color;
+        font-family: variables.$sans-serif;
+        font-size: 12px;
+    }
+}
+
+input {
+    padding: 8px 16px;
+    border-radius: 8px;
+    flex-grow: 1;
+    border: 1px solid transparent;
+
+    &.dark {
+        border: 1px solid variables.$white;
+        background-color: variables.$main-color;
+        color: variables.$white
+    }
+
+    &.light {
+        border: 1px solid variables.$main-color;
+        background-color: variables.$white;
+        color: variables.$main-color;
+    }
+}
+
+.input_with_button {
+    padding-bottom: 16px;
+    display: flex;
+    gap: 16px;
+
+    button {
+        width: 150px;
+        height: fit-content;
+    }
+}
+
+@media (max-width: 700px) {
+    .input_with_button {
+        flex-direction: column;
+    }
+}
+
+.checkbox {
+    *,
+    ::after,
+    ::before {
+        box-sizing: border-box;
+    }
+
+    [type="checkbox"].box {
+        margin: 0;
+        width: 0;
+        height: 0;
+        display: inline;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        + label:before {
+            content: "";
+            display: inline-block;
+            vertical-align: top;
+            height: 1.15em;
+            width: 1.15em;
+            margin-right: 0.6em;
+            color: variables.$main-color;
+            border: solid 1px variables.$main-color;
+            border-radius: 4px;
+            will-change: color, border;
+            transform: translate3d(0, 0, 0);
+            transition: color 0.1s, border 0.1s;
+        }
+
+        &:enabled:active + label:before,
+        &:enabled + label:active:before {
+            background-color: variables.$white;
+        }
+
+        &:checked + label:before {
+            border: solid 1px variables.$purple-2;
+            background-color: variables.$purple-2;
+            color: variables.$purple-2;
+        }
+
+        &:checked:enabled:active + label:before,
+        &:checked:enabled + label:active:before {
+            background-color: variables.$main-color;
+            color: variables.$main-color;
+        }
+
+        &:disabled + label:before {
+            opacity: 0.5;
+        }
+
+        + label {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    }
+}

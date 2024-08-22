@@ -1,0 +1,31 @@
+@use "../utilities/variables.scss";
+
+.small_round_container {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background-color: variables.$detail;
+
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+.rounded_corners_container {
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.round_container {
+    padding: 16px;
+    border-radius: 32px;
+}
+
+.fit_content {
+    width: fit-content;
+}

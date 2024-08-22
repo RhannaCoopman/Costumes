@@ -21,15 +21,7 @@ class Tag extends Authenticatable
     protected $fillable = [
         'uuid',
         'name',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'id',
+        'id'
     ];
 
     public function posts()

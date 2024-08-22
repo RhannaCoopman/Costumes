@@ -1,4 +1,4 @@
-@if (request()->routeIs('feed.list') || request()->routeIs('profile.*') || request()->routeIs('groups.recommendations'))
+@if (request()->routeIs('feed.list') || request()->routeIs('profile.*') || request()->routeIs('groups.recommendations') || request()->routeIs('community.*') || request()->routeIs('chats.*'))
     <nav>
         <div>
             <a href="{{ route('feed.list') }}" class="{{ request()->routeIs('feed.list') ? 'active' : '' }}">
@@ -6,14 +6,25 @@
                 <div class="{{ request()->routeIs('feed.list') ? 'active' : '' }}"></div>
             </a>
 
-            <a class="primary" href="{{ route('post.create') }}" class="{{ request()->routeIs('post.create') ? 'active' : '' }}">
-                <img src="/images/navigation/plus.svg" />
-            </a>
-
             <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
                 <img src="/images/navigation/profile.svg" />
                 <div class="{{ request()->routeIs('profile.*') ? 'active' : '' }}"></div>
             </a>
+
+            <a class="primary" href="{{ route('post.create') }}" class="{{ request()->routeIs('post.create') ? 'active' : '' }}">
+                <img src="/images/navigation/plus.svg" />
+            </a>
+
+            <a href="{{ route('community.feed') }}" class="{{ request()->routeIs('community.*') ? 'active' : '' }}">
+                <img src="/images/navigation/profile.svg" />
+                <div class="{{ request()->routeIs('community.*') ? 'active' : '' }}"></div>
+            </a>
+
+            <a href="{{ route('chats.list') }}" class="{{ request()->routeIs('chats.*') ? 'active' : '' }}">
+                <img src="/images/navigation/profile.svg" />
+                <div class="{{ request()->routeIs('chats.*') ? 'active' : '' }}"></div>
+            </a>
+
         </div>
     </nav>
 @endif

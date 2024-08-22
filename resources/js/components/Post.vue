@@ -5,7 +5,7 @@
             <!-- Screen navigation -->
             <div class="screen_navigation">
                 <div>
-                    <a href="/" class="faded_button">
+                    <a href="/" class="round_button faded_white_color">
                         <img :src="'/images/arrow-left.svg'" />
                     </a>
                 </div>
@@ -15,10 +15,10 @@
             <div class="post_image">
                 <img :src="getImageUrl(this.post.images[this.imageIndex].path)" :alt="'Image for post ' + post.id" />
                 <div class="actions">
-                    <like class="faded_button" :post-id="this.post.id" :initial-liked="this.liked"
+                    <like class="round_button faded_white_color" :post-id="this.post.id" :initial-liked="this.liked"
                         :initial-likes-count="this.likesCount"></like>
 
-                    <save class="faded_button" :post-id="this.post.id" :initial-saved="this.saved"></save>
+                    <save class="round_button faded_white_color" :post-id="this.post.id" :initial-saved="this.saved"></save>
                 </div>
 
             </div>
@@ -74,9 +74,6 @@
             <div class="wide-column">
                 <div v-if="currentAnnotation != null">
                     <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . name }}</p>
-                    <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . store }}</p>
-                    <p>{{ this . post . images[imageIndex] . annotations[currentAnnotation] . url }}</p>
-                    <!-- <a :href="this.post.images[imageIndex].annotations[currentAnnotation].url" target="_blank">Visit webshop</a> -->
                     <button @click="goToLink(this.post.images[imageIndex].annotations[currentAnnotation].url)">Visit
                         webshop</button>
 
@@ -89,6 +86,9 @@
             </div>
         </div>
     </div>
+
+    <feed-grid :search="false" :post-id="this.post.id"></feed-grid>
+
 </template>
 
 <script>

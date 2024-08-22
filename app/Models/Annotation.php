@@ -25,7 +25,7 @@ class Annotation extends Authenticatable
         'user_description',
         'name',
         'brand',
-        'shop',
+        'store',
         'url',
         'article_number',
         'image_id',

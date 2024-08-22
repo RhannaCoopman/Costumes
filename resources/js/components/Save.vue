@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click.stop.prevent="toggleSave" class="action_button">
+        <button @click.stop.prevent="toggleSave" class="square_button detail_color">
             <img v-if="saved" :src="'/images/saved.svg'" />
             <img v-else :src="'/images/not_saved.svg'" />
         </button>

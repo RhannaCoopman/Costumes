@@ -17,7 +17,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'city',
+        'zip_code',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,8 +47,7 @@ class User extends Authenticatable
 
     public function likedPosts()
     {
-        return $this->belongsToMany(Post::class, 'likes')
-        ->withTimestamps();
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
     }
 
     public function savedPosts()
@@ -57,7 +62,7 @@ class User extends Authenticatable
      */
     public function uploadedPosts()
     {
-        return $this->hasMany(Post::class)->orderBy('updated_at', 'desc');;
+        return $this->hasMany(Post::class)->orderBy('updated_at', 'desc');
     }
 
     /**
@@ -71,8 +76,41 @@ class User extends Authenticatable
     /**
      * Get the tags associated with the user through the userTags relationship.
      */
+
     public function tags()
     {
+        return $this->hasMany(UserTag::class);
+    }
+
+    /**
+     * Get the tags associated with the user with score through the userTags relationship.
+     */
+    public function tagsWithScore()
+    {
         return $this->belongsToMany(Tag::class, 'user_tags')->withPivot('score');
+    }
+
+    // public function chats()
+    // {
+    //     return $this->belongsToMany(Chat::class, 'chat_user')->with('latestMessage')->orderByDesc('latest_message.created_at');
+    // }
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'chat_user')
+            ->with('latestMessage')
+            ->join('messages as latest_messages', function ($join) {
+                $join->on('chats.id', '=', 'latest_messages.chat_id')
+                     ->whereRaw('latest_messages.id = (select max(id) from messages where messages.chat_id = chats.id)');
+            })
+            ->orderBy('latest_messages.created_at', 'desc')
+            ->select('chats.*');
+    }
+
+    /**
+     * The interests that belong to the user.
+     */
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'user_interests');
     }
 }
