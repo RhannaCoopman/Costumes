@@ -73,8 +73,6 @@ export default {
                     params: { page, per_page: perPage, tag: this.selectedTag, post_id: this.postId },
                 });
 
-                console.log(response.data);
-
                 const fetchedPosts = response.data.data;
 
                 if (fetchedPosts.length === 0) {
@@ -103,7 +101,6 @@ export default {
         },
         handleTagClick(tag) {
             this.selectedTag = tag;
-            console.log(this.selectedTag);
             this.posts = [];
 
             this.page = 1; // Reset the page number when a new tag is selected

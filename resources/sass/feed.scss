@@ -1,28 +1,15 @@
 @use "utilities/variables.scss";
 
 .feed_grid {
-
-    height: calc(100vh - 160px);
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    gap: 8px;
-
-    // line-height: 16px;
-
-    // -webkit-column-count: 3;
-    // -webkit-column-gap: 16px;
-    // -moz-column-count: 3;
-    // -moz-column-gap: 16px;
-    // column-count: 3;
-    // column-gap: 16px;
-
-    // -webkit-row-gap: 16px;
-    // -moz-row-gap: 16px;
-    // row-gap: 16px;
-
     display: grid;
     gap: 16px;
-    grid-template-columns:repeat(3, minmax(0, 1fr));
+
+    height: calc(100vh - 160px);
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-width: 100%;
+
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    grid-auto-rows: auto; /* Automatic height for each row */
 
     .feed_post {
         background-color: variables.$white;

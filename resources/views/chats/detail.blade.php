@@ -5,7 +5,7 @@
                 <a href="/chats" class="round_button faded_white_color">
                     <img :src="'/images/arrow-left.svg'" />
                 </a>
-                <h1>{{ $otherUserName }}</h1>
+                <h1>{{ $otherUser->name }}</h1>
             </div>
 
             <div>
@@ -16,6 +16,7 @@
         <chat-messages
             :chat-uuid="'{{ $chat->uuid }}'"
             :logged-in-user-id="{{ auth()->user()->id }}"
+            :receiver_id="{{$otherUser->id}}"
             >
         </chat-messages>
     </div>

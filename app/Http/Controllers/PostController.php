@@ -22,9 +22,9 @@ class PostController extends Controller
 {
     public function feed(): View
     {
+        $user = auth()->user();
         $user_id = auth()->id();
 
-        // Join post tags with user tags and include the score
         $commonTags = DB::table('post_tags as pt')->join('user_tags as ut', 'pt.tag_id', '=', 'ut.tag_id')->select('pt.post_id', DB::raw('SUM(ut.score) as total_tag_score'))->where('ut.user_id', $user_id)->groupBy('pt.post_id');
 
         $posts = DB::table('posts as p')
@@ -53,20 +53,21 @@ class PostController extends Controller
                 DB::raw('CASE WHEN s.id IS NOT NULL THEN "true" ELSE "false" END as saved'),
                 'i.path as first_image_path',
                 DB::raw('
-                    (
-                        0.1 * COALESCE(ct.total_tag_score, 0) +
-                        0.2 * COALESCE(lc.likes_count, 0) +
-                        0.2 * COALESCE(sc.saves_count, 0) +
-                        0.2 * DATEDIFF(NOW(), p.created_at) +
-                        0.1 * DATEDIFF(NOW(), p.updated_at)
-                    ) as score
-                '),
+                        (
+                            0.1 * COALESCE(ct.total_tag_score, 0) +
+                            0.2 * COALESCE(lc.likes_count, 0) +
+                            0.2 * COALESCE(sc.saves_count, 0) +
+                            0.2 * DATEDIFF(NOW(), p.created_at) +
+                            0.1 * DATEDIFF(NOW(), p.updated_at)
+                        ) as score
+                    '),
             )
             ->orderByDesc('score')
             ->get();
 
         return view('posts.feed', [
             'posts' => $posts,
+            'welcome_flow_completed' => $user->welcome_flow_completed,
         ]);
     }
 
@@ -116,9 +117,9 @@ class PostController extends Controller
     //         ->orderByDesc('score')
     //         ->get();
 
-        // return view('posts.feed', [
-        //     'posts' => $posts,
-        // ]);
+    // return view('posts.feed', [
+    //     'posts' => $posts,
+    // ]);
     // }
 
 
@@ -280,9 +281,9 @@ class PostController extends Controller
         foreach ($tags as $tag) {
             if (
                 $user
-                    ->tagsWithScore()
-                    ->where('tag_id', $tag->id)
-                    ->exists()
+                ->tagsWithScore()
+                ->where('tag_id', $tag->id)
+                ->exists()
             ) {
                 // Update existing pivot table record
                 $currentScore = $user

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'city',
         'zip_code',
+        'welcome_flow_completed',
     ];
 
     /**

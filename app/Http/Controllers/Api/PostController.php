@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\Annotation;
+use App\Models\Interest;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\Save;
@@ -25,6 +26,7 @@ class PostController extends Controller
     public function fetchPosts(Request $request)
     {
         $user_id = Auth::id();
+        $user = Auth::user();
 
         // Get tags associated with user
         $userTags = RecommendationService::getUserTagsWithScores($user_id);
@@ -103,6 +105,39 @@ class PostController extends Controller
         ]);
     }
 
+    public function fetchWelcomePosts()
+    {
+        $posts = Post::where('user_id', 3)->with('firstImage')->get();
+        $allInterests = Interest::all();
+
+        info(json_encode($posts, JSON_PRETTY_PRINT));
+
+        return response()->json([
+            'data' => $posts,
+            'allInterests' => $allInterests,
+        ]);
+    }
+
+    public function saveWelcomeData(Request $request)
+    {
+        $user = Auth::user();
+
+        // Log user ID and selected interests
+        info($user->id);
+        info($request->interests);
+
+        // Save the user's selected interests
+        $interests = $request->interests;
+        $user->interests()->sync($interests);  // Sync the selected interests with the user
+
+        // Mark the welcome flow as completed
+        $user->welcome_flow_completed = true;
+        $user->save();
+
+        return response()->json(['message' => 'Welcome flow completed and interests saved']);
+    }
+
+
     /**
      * Calculate the weighted Jaccard similarity coefficient between user tags with scores and post tags.
      *
@@ -127,61 +162,8 @@ class PostController extends Controller
             return 0;
         }
 
-        info($intersection);
-
         return $intersection / $union;
     }
-
-    // public function feed(): View
-    // {
-    //     $user_id = Auth::id();
-
-    //     // Get common tags score query
-    //     $commonTagsQuery = TagService::calculateTagScoreJoin($user_id);
-
-    //     // Build the main query for posts
-    //     $posts = DB::table('posts as p')
-    //         ->leftJoinSub($commonTagsQuery, 'ct', 'p.id', '=', 'ct.post_id')
-    //         ->leftJoin('likes as l', function ($join) use ($user_id) {
-    //             $join->on('p.id', '=', 'l.post_id')->where('l.user_id', '=', $user_id);
-    //         })
-    //         ->leftJoin('saves as s', function ($join) use ($user_id) {
-    //             $join->on('p.id', '=', 's.post_id')->where('s.user_id', '=', $user_id);
-    //         })
-    //         ->leftJoin(DB::raw('(SELECT post_id, COUNT(*) as likes_count FROM likes GROUP BY post_id) as lc'), 'p.id', '=', 'lc.post_id')
-    //         ->leftJoin(DB::raw('(SELECT post_id, COUNT(*) as saves_count FROM saves GROUP BY post_id) as sc'), 'p.id', '=', 'sc.post_id')
-    //         ->leftJoin(DB::raw('(SELECT post_id, MIN(id) as first_image_id FROM images GROUP BY post_id) as fi'), 'p.id', '=', 'fi.post_id')
-    //         ->leftJoin('images as i', 'fi.first_image_id', '=', 'i.id')
-    //         ->select(
-    //             'p.id',
-    //             'p.content',
-    //             'p.uuid',
-    //             'p.popular',
-    //             'p.created_at',
-    //             'p.updated_at',
-    //             DB::raw('COALESCE(ct.total_tag_score, 0) as total_tag_score'),
-    //             DB::raw('COALESCE(lc.likes_count, 0) as likes_count'),
-    //             DB::raw('COALESCE(sc.saves_count, 0) as saves_count'),
-    //             DB::raw('CASE WHEN l.id IS NOT NULL THEN "true" ELSE "false" END as liked'),
-    //             DB::raw('CASE WHEN s.id IS NOT NULL THEN "true" ELSE "false" END as saved'),
-    //             'i.path as first_image_path',
-    //             DB::raw('
-    //                 (
-    //                     0.1 * COALESCE(ct.total_tag_score, 0) +
-    //                     0.2 * COALESCE(lc.likes_count, 0) +
-    //                     0.2 * COALESCE(sc.saves_count, 0) +
-    //                     0.2 * DATEDIFF(NOW(), p.created_at) +
-    //                     0.1 * DATEDIFF(NOW(), p.updated_at)
-    //                 ) as score
-    //             '),
-    //         )
-    //         ->orderByDesc('score')
-    //         ->get();
-
-    // return view('posts.feed', [
-    //     'posts' => $posts,
-    // ]);
-    // }
 
     public function post(Post $post): View
     {

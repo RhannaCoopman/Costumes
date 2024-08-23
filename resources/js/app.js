@@ -18,6 +18,9 @@ import chatMessages from "./components/Community/Chat/chatMessages.vue"
 import FeedGrid from "./components/Post/FeedGrid.vue"
 import FeedFilters from "./components/Post/FeedFilters.vue"
 
+import WelcomeFlow from "./components/WelcomeFlow.vue"
+
+
 window.Alpine = Alpine;
 
 const app = createApp({});
@@ -35,7 +38,8 @@ app
 .component("toggle-views", toggleViews)
 .component("chat-messages", chatMessages)
 .component("feed-grid", FeedGrid)
-.component("feed-filters", FeedFilters);
+.component("feed-filters", FeedFilters)
+.component("welcome-flow", WelcomeFlow)
 ;
 
 

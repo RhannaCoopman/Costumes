@@ -108,7 +108,6 @@ export default {
 
         },
         applyFilters() {
-            console.log(this.location);
             this.$emit('filters-applied', {
 
                 location: this.location,

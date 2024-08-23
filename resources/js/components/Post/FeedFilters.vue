@@ -67,7 +67,6 @@ export default {
                 });
 
                 this.searchTags = response.data.searchTags;
-                console.log(this.searchTags);
 
             } catch (error) {
                 console.error("Error fetching search tags:", error);

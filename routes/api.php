@@ -33,6 +33,8 @@ Route::namespace('Api')
         Route::get('/chat/{chat:uuid}', [ChatController::class, 'fetchChat'])->where('chatUuid', '[a-zA-Z0-9\-]+');
 
         Route::get('/posts', [PostController::class, 'fetchPosts']);
+        Route::get('/welcome_posts', [PostController::class, 'fetchWelcomePosts']);
+        Route::post('/save_welcome_data', [PostController::class, 'saveWelcomeData']);
 
         Route::get('/tags/search', [TagController::class, 'fetchSearchTags']);
         Route::get('/tags/random', [TagController::class, 'fetchRandomTags']);
