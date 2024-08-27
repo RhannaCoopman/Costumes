@@ -32,7 +32,7 @@ class PostController extends Controller
         $userTags = RecommendationService::getUserTagsWithScores($user_id);
 
         // Parameters
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 150);
         $tag = $request->input('tag', null);
         $postId = $request->input('post_id', null);
 
@@ -86,20 +86,22 @@ class PostController extends Controller
             return $b['score'] <=> $a['score'];
         });
 
-        // Randomize a bit by shuffling the top N recommendations
-        $topN = $request->input('top_n', 20);
-        $recommendedPosts = array_slice($recommendations, 0, $topN);
+        info(json_encode($recommendations, JSON_PRETTY_PRINT));
 
-        // Shuffle a small portion of the top recommendations to add randomness
-        $shuffleCount = min(count($recommendedPosts), 5); // Adjust the number to control randomness
-        $postsToShuffle = array_slice($recommendedPosts, 0, $shuffleCount);
-        shuffle($postsToShuffle);
+        // // Randomize a bit by shuffling the top N recommendations
+        // $topN = $request->input('top_n', 20);
+        // $recommendedPosts = array_slice($recommendations, 0, $topN);
 
-        // Merge shuffled posts back into the recommendations
-        $recommendedPosts = array_merge($postsToShuffle, array_slice($recommendedPosts, $shuffleCount));
+        // // Shuffle a small portion of the top recommendations to add randomness
+        // $shuffleCount = min(count($recommendedPosts), 15); // Adjust the number to control randomness
+        // $postsToShuffle = array_slice($recommendedPosts, 0, $shuffleCount);
+        // shuffle($postsToShuffle);
+
+        // // Merge shuffled posts back into the recommendations
+        // $recommendedPosts = array_merge($postsToShuffle, array_slice($recommendedPosts, $shuffleCount));
 
         return response()->json([
-            'data' => $recommendedPosts,
+            'data' => $recommendations,
             'current_page' => $posts->currentPage(),
             'last_page' => $posts->lastPage(),
         ]);
@@ -107,7 +109,11 @@ class PostController extends Controller
 
     public function fetchWelcomePosts()
     {
-        $posts = Post::where('user_id', 3)->with('firstImage')->get();
+        $posts = Post::where('user_id', 1)
+        ->with('firstImage')
+        ->inRandomOrder()
+        ->get();
+
         $allInterests = Interest::all();
 
         info(json_encode($posts, JSON_PRETTY_PRINT));

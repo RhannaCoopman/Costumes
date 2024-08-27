@@ -29,3 +29,12 @@
 .fit_content {
     width: fit-content;
 }
+
+.full_width {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 60px;
+}

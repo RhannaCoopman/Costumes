@@ -21,7 +21,7 @@ export default {
             users: [],
             loading: false,
             page: 1,
-            perPage: 10,
+            perPage: 50,
             allUsersLoaded: false,
             selectedInterests: [],
             location: {

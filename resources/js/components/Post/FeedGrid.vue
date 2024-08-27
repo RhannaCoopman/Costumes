@@ -1,7 +1,7 @@
 <template>
     <feed-filters v-if="search" @tag-click="handleTagClick"></feed-filters>
 
-    <div class="feed_grid" @scroll="handleScroll">
+    <div class="feed_grid" @scroll="handleScroll()">
         <div v-for="post in posts" :key="post.post.id" class="feed_post">
             <a :href="`/post/${post.post.uuid}`" class="feed_post">
                 <div v-if="post.post.is_popular" class="post_badge">
@@ -31,11 +31,15 @@
                 </div>
             </a>
         </div>
-
-        <div v-if="this.isLoading" class="loading"></div>
-        <p v-if="!this.hasMorePosts">There are no more posts left.</p>
     </div>
 
+    <div v-if="this.isLoading" class="full_width">
+        <div class="loading"></div>
+    </div>
+    <p v-if="!this.isLoading" class="full_width">
+        There are no more posts left.
+    </p>
+    <br />
 </template>
 
 <script>
@@ -56,21 +60,27 @@ export default {
             type: Boolean,
             required: false,
         },
-        postId: { // Add this prop
+        postId: {
+            // Add this prop
             type: Number,
             required: false,
         },
     },
 
     methods: {
-        async fetchPosts(page = 1, perPage = 20) {
+        async fetchPosts(page = 1, perPage = 150) {
             if (this.isLoading) return;
 
             this.isLoading = true;
 
             try {
                 const response = await axios.get("/api/posts", {
-                    params: { page, per_page: perPage, tag: this.selectedTag, post_id: this.postId },
+                    params: {
+                        page,
+                        per_page: perPage,
+                        tag: this.selectedTag,
+                        post_id: this.postId,
+                    },
                 });
 
                 const fetchedPosts = response.data.data;
@@ -88,13 +98,16 @@ export default {
             }
         },
         handleScroll(event) {
+            console.log(this.page);
             const { scrollTop, scrollHeight, clientHeight } = event.target;
 
-            if (scrollTop + clientHeight >= scrollHeight - 500) {
+            if (scrollTop + clientHeight >= scrollHeight - 100) {
                 if (this.hasMorePosts) {
                     this.fetchPosts(this.page);
                 }
             }
+
+            console.log(this.page);
         },
         getImageUrl(path) {
             return `/storage/${path}`;

@@ -55,14 +55,6 @@
                         :user-id="user.user.id"
                         :chat-uuid="user.chat_uuid"
                     ></chat>
-                    <chat
-                        :user-id="user.user.id"
-                        :chat-uuid="user.chat_uuid"
-                    ></chat>
-                    <chat
-                        :user-id="user.user.id"
-                        :chat-uuid="user.chat_uuid"
-                    ></chat>
                 </div>
             </div>
         </div>
